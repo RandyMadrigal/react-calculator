@@ -1,8 +1,10 @@
+import { CalculatorContainer } from "./components/CalculatorContainer";
+
 const App = () => {
   return (
-    <>
-      <h1>Calculator</h1>
-    </>
+    <div className="flex flex- justify-center items-center mx-auto h-screen bg-black">
+      <CalculatorContainer />
+    </div>
   );
 };
 
