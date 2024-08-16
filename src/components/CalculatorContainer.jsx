@@ -6,35 +6,44 @@ import { evaluate } from "mathjs";
 
 export const CalculatorContainer = () => {
   const [key, setKey] = useState(null);
-  const [num, setNum] = useState("0");
+  const [num, setNum] = useState(0);
 
   const handleClick = (e) => {
     const value = e.target.value;
-    /*
-    const regexZero = /^(?!0{2,})\d+$/;
-    const regexDecimal = /^(?!.*\.\d*\.\d*)\d*(\.\d*)?$/;
-    */
 
-    if (num === "0") {
+    if (num === 0 && value !== ".") {
       setNum("");
     }
 
     if (value === "AC") {
-      setNum("0");
+      setNum(0);
       return;
+    }
+
+    if (value === ".") {
+      try {
+        const result = num.split("").filter((x) => x === ".");
+        result.length === 0 && setNum((prev) => prev + value);
+        return;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    if (value === "+" || value === "-" || value === "*" || value === "/") {
+      //TODO
     }
 
     if (value === "=") {
       try {
         setNum(evaluate(num));
+        return;
       } catch (err) {
         console.log(err);
-        setNum("Error");
       }
-      return;
     }
 
-    setNum((previous) => previous + value);
+    setNum((prev) => prev + value);
   };
 
   useEffect(() => {
@@ -48,7 +57,7 @@ export const CalculatorContainer = () => {
   return (
     <>
       <div className="grid grid-cols-4 justify-self-center  h-2/4 w-7/12 md:w-4/12 lg:w-3/12 ">
-        <Display num={num.toString()} />
+        <Display total={num.toString()} />
         {key &&
           key.map((keyPad) => (
             <Pad
